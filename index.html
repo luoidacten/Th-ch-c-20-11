@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="letter_style.css">
 </head>
 <body>
-
+<audio id="bgMusic" src="Nhac1.mp3"></audio>
 <div class="container">
     <div class="nav-buttons">
     <a href="vuon_Hoa3.html">🌸 Vườn Hoa Lời Chúc</a>
@@ -77,7 +77,8 @@ Chúng em biết ơn thầy rất nhiều!
 
 // Khi bấm trái tim
 heart.addEventListener("click", () => {
-
+    bgMusic.volume = 0.7; 
+    bgMusic.play(); 
     wrapper.classList.add("flap");
 
     // Sau khi mở nắp 1.2s → bao thư bay

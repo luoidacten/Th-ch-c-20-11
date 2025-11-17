@@ -77,7 +77,9 @@
 </head>
 
 <body>
-
+    
+<audio id="bgMusic" src="Nhac2.mp3"></audio>
+<audio id="bgMusic" src="wind-blowing-.mp3"></audio>
 <div id="formChuc">
     <input id="txtChuc" type="text" placeholder="Nhập lời chúc…" />
     <button onclick="taoHoa()">🌸 Thêm hoa</button>
@@ -223,7 +225,25 @@ function taoHoaNhoSoLuong(n) {
 /* START */
 loadHoaTuSheet();
 taoHoaNhoSoLuong(200);
+let musicStarted = false;
+document.addEventListener("click", () => {
+    if (!musicStarted) {
+        musicStarted = true;
+        const bgMusic = document.getElementById("bgMusic");
+        bgMusic.volume = 0.6;
+        bgMusic.loop = true;
+        bgMusic.play();
+    }
+});
 
+// --- Hiệu ứng gió nhẹ sau 5.5 giây ---
+setTimeout(() => {
+    const windFx = document.getElementById("windFx");
+    windFx.volume = 0.25;
+    windFx.loop = true;
+    windFx.play();
+}, 5500);
 </script>
+
 </body>
 </html>
