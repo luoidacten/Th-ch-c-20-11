@@ -1,0 +1,366 @@
+/* -------------------------------- */
+/*         STYLE CƠ BẢN             */
+/* -------------------------------- */
+:root{
+    --primary: #f7f6e5d8;
+    --bg-color: rgb(212, 236, 240);
+    --bg-envelope-color: #f5edd1;
+    --envelope-tab: #ecdeb8;
+    --envelope-cover: #e6cfa7;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --txt-color: #444;
+    --heart-color: rgb(252, 8, 8);
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+/* -------------------------------- */
+/*           ENVELOPE               */
+/* -------------------------------- */
+
+.envelope-wrapper {
+  background: var(--bg-envelope-color);
+  box-shadow: 0 0 40px var(--shadow-color);
+  position: relative;
+}
+.envelope-wrapper .envelope{
+    position: relative;
+    width: 300px;
+    height: 230px;
+}
+.envelope-wrapper .envelope::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    border-top: 130px solid var(--envelope-tab);
+    border-right: 150px solid transparent;
+    border-left: 150px solid transparent;
+    transform-origin: top;
+    transition: all 0.5s ease-in-out 0.7s;
+}
+.envelope-wrapper .envelope::after{
+    content: "";
+    position: absolute;
+    z-index: 2;
+    border-top: 130px solid transparent;
+    border-right: 150px solid var(--envelope-cover);
+    border-bottom: 100px solid var(--envelope-cover);
+    border-left: 150px solid var(--envelope-cover);
+}
+
+.envelope .letter{
+    position: absolute;
+    right: 20%;
+    bottom: 0;
+    width: 54%;
+    height: 80%;
+    background: var(--primary);
+    text-align: center;
+    transition: all 1s ease-in-out;
+    box-shadow: 0 0 5px var(--shadow-color);
+    padding: 20px 10px;
+}
+
+.envelope .letter .text{
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--txt-color);
+    text-align: left;
+    font-size: 10px;
+}
+
+.heart{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 15px;
+    height: 15px;
+    background: var(--heart-color);
+    z-index: 10;
+    transform: translate(-50%, -20%) rotate(-45deg);
+    transition: transform 0.5s ease-in-out 1s;
+    cursor: pointer;
+}
+.heart::before, .heart::after{
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: var(--heart-color);
+    border-radius: 50%; 
+}
+.heart::before{ top: -7.5px; }
+.heart::after{ right: -7.5px; }
+
+/* --- mở nắp --- */
+.flap .envelope::before{
+    transform: rotateX(180deg);
+    z-index: 0;
+}
+.flap .envelope .letter {
+    bottom: 100px;
+    transform: scale(1.5);
+    transition-delay: 1s;
+}
+.flap .heart{ transform: rotate(45deg); }
+
+/* -------------------------------- */
+/*  HIỆU ỨNG BAO THƯ BAY NGHIÊNG    */
+/* -------------------------------- */
+.envelope-wrapper.fly-away{
+    animation: flyEnvelope 2.5s ease forwards;
+}
+
+@keyframes flyEnvelope{
+    0%   { transform: rotate(0deg) translate(0,0); opacity: 1; }
+    30%  { transform: rotate(-10deg) translate(-40px, 20px); }
+    100% {
+        transform: rotate(-20deg) translate(-350px, 350px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* -------------------------------- */
+/*      LÁ THƯ THẬT (LETTER MAIN)   */
+/* -------------------------------- */
+.letter-main{
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%) scale(0.5);
+    width: 450px;
+    height: 300px;
+    background: #fffdf7;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    opacity: 0;
+    padding: 20px;
+    display: none;
+    transition: 1s ease;
+    z-index: 999;
+}
+.letter-main.show{
+    display: block;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Cây bút */
+.pen{
+    width: 65px;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    opacity: 0;
+    transform: rotate(20deg);
+    transition: opacity 1s ease;
+}
+
+.pen.show{
+    opacity: 1;
+}
+
+/* Typed Text */
+.letter-content{
+    font-size: 16px;
+    font-family: 'Times New Roman', serif;
+    white-space: pre-line;
+    color: #333;
+}
+
+/* ------------------------------------------------ */
+/* ================= HIỆU ỨNG TRANG TRÍ =========== */
+/* ------------------------------------------------ */
+
+/* ✨ 1. Hiệu ứng lấp lánh khi mở thư */
+.sparkles {
+    position: absolute;
+    width: 300px;
+    height: 230px;
+    pointer-events: none;
+    opacity: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,.7) 0%, transparent 70%);
+    background-size: 120px 120px;
+    animation: none;
+}
+
+.flap .sparkles {
+    animation: sparkleEffect 2s ease-out forwards;
+}
+
+@keyframes sparkleEffect {
+    0%   { opacity: 0; transform: scale(0.8); }
+    50%  { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.2); }
+}
+
+
+/* 🌸 2. Hoa bay lên */
+.flowers {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    font-size: 22px;
+    opacity: 0;
+}
+
+.flap .flowers {
+    animation: flowerUp 2.5s ease-out forwards;
+}
+
+@keyframes flowerUp {
+    0%   { opacity: 0; transform: translate(-50%, 20px) scale(0.6); }
+    50%  { opacity: 1; transform: translate(-50%, -20px) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -80px) scale(1.2); }
+}
+
+
+/* 💖 3. Trái tim nhỏ bay lên */
+.mini-hearts {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    font-size: 14px;
+    transform: translateX(-50%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.flap .mini-hearts {
+    animation: heartsUp 2.2s ease-out forwards;
+}
+
+@keyframes heartsUp {
+    0% { opacity: 0; transform: translate(-50%, 10px) scale(0.5); }
+    30% { opacity: 1; transform: translate(-50%, -10px) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -70px) scale(1.2); }
+}
+/* ------------------------------------------------ */
+/*    HIỆU ỨNG PRACTICAL RƠI XUỐNG TOÀN MÀN HÌNH    */
+/* ------------------------------------------------ */
+
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.particle {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    opacity: 0;
+    transform: translateY(-50px) rotate(0deg);
+    animation: fall linear infinite;
+}
+
+/* Animation rơi */
+@keyframes fall {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px) rotate(0deg);
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(110vh) rotate(360deg);
+    }
+}
+
+/* Khi thư mở → particles bắt đầu rơi */
+.flap .particles .particle {
+    animation-duration: 3.5s;
+}   
+/* ====== KHUNG TRANG TRÍ TOÀN MÀN HÌNH ====== */
+.frame-decor {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("frame.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* ====== HOA RƠI Ở GIỮA ====== */
+.falling-area {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3; /* trên khung, dưới phong bì */
+    overflow: hidden;
+}
+
+.fall-item {
+    position: absolute;
+    top: -80px;
+    width: 70px;
+    height: 70px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 2 loại hoa rơi */
+.hoa1 { background-image: url("hoatren.png"); }
+.hoa2 { background-image: url("hoaduoi.png"); }
+.nav-buttons {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+}
+
+.nav-buttons a {
+    text-decoration: none;
+    background: rgba(255,255,255,0.9);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #333;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: 0.25s;
+}
+
+.nav-buttons a:hover {
+    transform: translateY(-3px);
+    background: #ffdede;
+}
+

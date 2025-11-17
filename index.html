@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Letter</title>
+    <link rel="stylesheet" href="letter_style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-buttons">
+    <a href="vuon_Hoa3.html">🌸 Vườn Hoa Lời Chúc</a>
+
+    </div>
+    <div class="frame-decor"></div>
+    <!-- Hiệu ứng hoa rơi -->
+    <div class="falling-area">
+        <div class="fall-item hoa1" style="left: 25%; animation-duration: 7s;"></div>
+        <div class="fall-item hoa2" style="left: 45%; animation-duration: 6s;"></div>
+        <div class="fall-item hoa1" style="left: 65%; animation-duration: 8s;"></div>
+        <div class="fall-item hoa2" style="left: 35%; animation-duration: 7.5s;"></div>
+    </div>
+
+    <!-- Bao thư -->
+    <div class="envelope-wrapper">
+        <div class="envelope">
+            <div class="letter">
+                <div class="text">
+                   
+                </div>
+            </div>
+        </div>
+
+        <div class="heart"></div>
+
+        <!-- Hiệu ứng trang trí -->
+        <div class="sparkles"></div>
+        <div class="flowers">🌸 🌼 🌺 🌸</div>
+        <div class="mini-hearts">💖 💗 💕</div>
+        <div class="particles"></div>
+    </div>
+</div>
+
+<!-- LÁ THƯ THẬT SAU KHI BAO THƯ BAY -->
+<div class="letter-main">
+    <img class="pen" src="pen.png">
+    <div class="letter-content" id="typewriter"></div>
+</div>
+
+<script>
+const heart = document.querySelector(".heart");
+const wrapper = document.querySelector(".envelope-wrapper");
+const letterMain = document.querySelector(".letter-main");
+const pen = document.querySelector(".pen");
+const typewriter = document.getElementById("typewriter");
+
+const text = 
+`Gửi Người Thầy Đáng Kính,
+
+Nhân dịp 20/11, lá thư này là lời chúc của tập thể lớp 12B1
+gửi đến thầy. Mở đầu, chúng em xin chúc thầy luôn khỏe mạnh,
+chúc thầy mãi vui vẻ và thành công.
+
+Tiếp theo, chúng em xin gửi lời cảm ơn chân thành đến thầy
+vì đã dẫn dắt chúng em trên con đường học vấn đầy khó khăn.
+Nhờ có sự chỉ bảo tận tâm của thầy cùng sự cố gắng của tập thể
+lớp 12B1, chúng em đã đạt được nhiều thành tựu, trong đó có
+giải nhất trong phong trào thi đua.
+
+Lời kết, chúng em xin chân thành cảm ơn sự đồng hành,
+gắn bó và giúp đỡ của thầy đối với lớp 12B1.
+Chúng em biết ơn thầy rất nhiều!
+
+          Tập thể lớp 12B1
+`;
+
+// Khi bấm trái tim
+heart.addEventListener("click", () => {
+
+    wrapper.classList.add("flap");
+
+    // Sau khi mở nắp 1.2s → bao thư bay
+    setTimeout(() => {
+        wrapper.classList.add("fly-away");
+
+        // Sau 1s lá thư thật xuất hiện
+        setTimeout(() => {
+            letterMain.classList.add("show");
+
+            // Hiện cây bút
+            setTimeout(() => {
+                pen.classList.add("show");
+            }, 600);
+
+            // Hiệu ứng gõ chữ
+            typeWriterEffect(text, 30);
+
+        }, 800);
+    }, 1200);
+});
+
+// Effect gõ từng chữ
+let index = 0;
+function typeWriterEffect(text, speed){
+    if(index < text.length){
+        typewriter.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(() => typeWriterEffect(text, speed), speed);
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vườn Hoa Lời Chúc 20/11</title>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        font-family: "Segoe UI", sans-serif;
+        background: url('Darkgrass.jpeg') center/cover no-repeat;
+    }
+
+    #formChuc {
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255,255,255,0.9);
+        padding: 10px 14px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+        z-index: 100;
+        display: flex;
+        gap: 10px;
+        backdrop-filter: blur(4px);
+    }
+
+    .flower {
+        position: absolute;
+        background-size: contain;
+        background-repeat: no-repeat;
+        animation: shakeXY 3s infinite ease-in-out;
+        cursor: pointer;
+    }
+    .smallFlower { width: 60px; height: 60px; opacity: 0.9; z-index: 5; }
+    .bigFlower { width: 200px; height: 200px; z-index: 20; }
+
+    @keyframes shakeXY {
+        0% { transform: translate(0px, 0px); }
+        25% { transform: translate(var(--dx), var(--dy)); }
+        50% { transform: translate(calc(var(--dx) * -1), calc(var(--dy) * -1)); }
+        75% { transform: translate(var(--dx), var(--dy)); }
+        100% { transform: translate(0px, 0px); }
+    }
+
+    .tooltip {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.8);
+        padding: 25px 35px;
+        background: white;
+        font-size: 18px;
+        border-radius: 15px;
+        display: none;
+        z-index: 9999;
+        animation: showPopup 0.2s ease forwards;
+        box-shadow: 0 6px 22px rgba(0,0,0,0.4);
+    }
+
+    .closeBtn {
+        position: absolute;
+        top: 6px;
+        right: 12px;
+        cursor: pointer;
+        font-size: 20px;
+        color: red;
+    }
+
+    @keyframes showPopup {
+        to { transform: translate(-50%, -50%) scale(1); }
+    }
+</style>
+</head>
+
+<body>
+
+<div id="formChuc">
+    <input id="txtChuc" type="text" placeholder="Nhập lời chúc…" />
+    <button onclick="taoHoa()">🌸 Thêm hoa</button>
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwEJFF7osvPXqASyrjym_RRMmfcB7DL29iaj1Mn2hq8kvOE51Auaoke7r5jatXpHmE/exec";
+const hoaList = ["hoa1.png", "hoa2.png", "hoa3.png", "hoa4.png", "hoa5.png"];
+
+// Khoảng cách tối thiểu giữa các loại hoa
+const GAP_BIG = 120;   // hoa lớn cách xa nhau
+const GAP_SMALL = 40;  // hoa nhỏ cách xa nhau
+
+let globalTip = document.createElement("div");
+globalTip.className = "tooltip";
+globalTip.innerHTML = `
+    <span class="closeBtn">✖</span>
+    <div id="tipContent"></div>
+`;
+document.body.appendChild(globalTip);
+globalTip.querySelector(".closeBtn").onclick = () => globalTip.style.display = "none";
+
+// lưu vị trí hoa
+const flowerPositions = []; 
+// { x, y, size, type: "big" hoặc "small" }
+
+async function loadHoaTuSheet() {
+    try {
+        const res = await fetch(API_URL + "?getData=1");
+        const data = await res.json();
+
+        data.forEach(f => {
+            renderFlower(f.text, f.x, f.y, f.size, f.img, false);
+            flowerPositions.push({ x: f.x, y: f.y, size: f.size, type: "big" });
+        });
+
+    } catch (err) {
+        console.error("Lỗi load Sheet:", err);
+    }
+}
+
+/* Kiểm tra trùng loại + khoảng cách */
+function biTrung(x, y, size, type) {
+
+    const GAP = (type === "big") ? GAP_BIG : GAP_SMALL;
+
+    for (const f of flowerPositions) {
+
+        // chỉ kiểm tra nếu cùng loại
+        if (f.type !== type) continue;
+
+        const dx = x - f.x;
+        const dy = y - f.y;
+        const distance = Math.sqrt(dx*dx + dy*dy);
+
+        if (distance < (size/2 + f.size/2 + GAP)) return true;
+    }
+    return false;
+}
+
+/* Tạo vị trí không trùng */
+function taoViTriKhongTrung(size, type) {
+    let x, y, loop = 0;
+
+    do {
+        x = Math.random() * (window.innerWidth - size);
+        y = Math.random() * (window.innerHeight - size);
+        loop++;
+        if (loop > 300) break;
+    } while (biTrung(x, y, size, type));
+
+    return { x, y };
+}
+
+/* RENDER HOA */
+function renderFlower(text, x, y, size, img, saveToSheet = true) {
+    const flower = document.createElement("div");
+    flower.classList.add("flower", "bigFlower");
+    flower.style.width = size + "px";
+    flower.style.height = size + "px";
+    flower.style.left = x + "px";
+    flower.style.top = y + "px";
+    flower.style.backgroundImage = `url("${img}")`;
+
+    flower.style.setProperty("--dx", (Math.random() * 14 - 7) + "px");
+    flower.style.setProperty("--dy", (Math.random() * 14 - 7) + "px");
+
+    flower.onclick = () => {
+        document.getElementById("tipContent").textContent = text;
+        globalTip.style.display = "block";
+    };
+
+    document.body.appendChild(flower);
+
+    if (saveToSheet) {
+        fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify({ text, x, y, size, img })
+        });
+    }
+}
+
+/* Tạo hoa lớn */
+function taoHoa() {
+    const text = txtChuc.value.trim();
+    if (!text) return;
+
+    const size = 200;
+    const img = hoaList[Math.floor(Math.random() * hoaList.length)];
+    const { x, y } = taoViTriKhongTrung(size, "big");
+
+    flowerPositions.push({ x, y, size, type: "big" });
+    renderFlower(text, x, y, size, img, true);
+    txtChuc.value = "";
+}
+
+/* Hoa nhỏ trang trí */
+function taoHoaNhoSoLuong(n) {
+    const size = 60;
+
+    for (let i = 0; i < n; i++) {
+        const img = hoaList[Math.floor(Math.random()*hoaList.length)];
+        const { x, y } = taoViTriKhongTrung(size, "small");
+
+        const flower = document.createElement("div");
+        flower.className = "flower smallFlower";
+        flower.style.width = size + "px";
+        flower.style.height = size + "px";
+        flower.style.left = x + "px";
+        flower.style.top = y + "px";
+        flower.style.backgroundImage = `url("${img}")`;
+
+        flower.style.setProperty("--dx", (Math.random() * 8 - 5) + "px");
+        flower.style.setProperty("--dy", (Math.random() * 8 - 5) + "px");
+        flower.style.animationDelay = (Math.random()*2) + "s";
+
+        flowerPositions.push({ x, y, size, type: "small" });
+
+        document.body.appendChild(flower);
+    }
+}
+
+/* START */
+loadHoaTuSheet();
+taoHoaNhoSoLuong(200);
+
+</script>
+</body>
+</html>
