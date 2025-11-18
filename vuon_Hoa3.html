@@ -73,6 +73,74 @@
     @keyframes showPopup {
         to { transform: translate(-50%, -50%) scale(1); }
     }
+
+    /* ========================= */
+/*   TỐI ƯU GIAO DIỆN MOBILE */
+/* ========================= */
+@media (max-width: 600px) {
+
+    body {
+        overflow: hidden;
+        touch-action: manipulation;
+        background-size: cover;
+    }
+
+    /* Form nhập lời chúc */
+    #formChuc {
+        top: 10px;
+        width: 90%;
+        padding: 8px 12px;
+        gap: 6px;
+    }
+
+    #formChuc input {
+        width: 65%;
+        font-size: 14px;
+        padding: 6px 8px;
+    }
+
+    #formChuc button {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+
+    /* Hoa lớn (giảm kích thước để không bị chiếm hết màn hình) */
+    .bigFlower {
+        width: 120px !important;
+        height: 120px !important;
+        opacity: 0.95;
+    }
+
+    /* Hoa nhỏ */
+    .smallFlower {
+        width: 38px !important;
+        height: 38px !important;
+        opacity: 0.85;
+    }
+
+    /* Tooltip popup */
+    .tooltip {
+        width: 85%;
+        padding: 15px 18px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
+
+    .closeBtn {
+        font-size: 20px;
+        right: 10px;
+        top: 6px;
+    }
+
+    /* Hạn chế popup bị che bởi bàn phím điện thoại */
+    @supports (-webkit-touch-callout: none) {
+        .tooltip {
+            position: fixed;
+            top: 45%;
+        }
+    }
+}
+
 </style>
 </head>
 

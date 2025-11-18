@@ -336,8 +336,8 @@ body{
 }
 
 /* 2 loại hoa rơi */
-.hoa1 { background-image: url("hoatren.png"); }
-.hoa2 { background-image: url("hoaduoi.png"); }
+.hoa1 { background-image: url("hoa4.png"); }
+.hoa2 { background-image: url("hoa5.png"); }
 .nav-buttons {
     position: fixed;
     right: 20px;
@@ -363,4 +363,117 @@ body{
     transform: translateY(-3px);
     background: #ffdede;
 }
+/* ======================== */
+/*     BACKGROUND TỔNG      */
+/* ======================== */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: url("Background.jpg"); /* <<< thay ảnh của bạn */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.95); /* làm dịu background */
+}
+/* ======================== */
+/*  TỐI ƯU HIỂN THỊ MOBILE  */
+/* ======================== */
+@media (max-width: 600px) {
 
+    /* Thu nhỏ khung trang trí */
+    .frame-decor {
+        background-size: 160%;
+        opacity: 0.85;
+    }
+
+    /* Giảm kích thước phong bì */
+    .envelope-wrapper .envelope {
+        width: 220px;
+        height: 170px;
+    }
+    .envelope-wrapper .envelope::before {
+        border-top: 95px solid var(--envelope-tab);
+        border-right: 110px solid transparent;
+        border-left: 110px solid transparent;
+    }
+    .envelope-wrapper .envelope::after {
+        border-top: 95px solid transparent;
+        border-right: 110px solid var(--envelope-cover);
+        border-bottom: 75px solid var(--envelope-cover);
+        border-left: 110px solid var(--envelope-cover);
+    }
+
+    /* Lá thư nhỏ lại bên trong phong bì */
+    .envelope .letter {
+        right: 18%;
+        width: 60%;
+        height: 75%;
+        padding: 12px 6px;
+    }
+
+    .envelope .letter .text {
+        font-size: 8px;
+    }
+
+    /* Heart button nhỏ lại */
+    .heart {
+        width: 12px;
+        height: 12px;
+    }
+    .heart::before, .heart::after {
+        width: 12px;
+        height: 12px;
+        top: -6px;
+        right: -6px;
+    }
+
+    /* Lá thư thật */
+    .letter-main {
+        width: 90vw;
+        height: auto;
+        min-height: 250px;
+        padding: 15px;
+        transform: translate(-50%, -50%) scale(0.6);
+        border-radius: 8px;
+    }
+
+    .letter-main.show {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Font chữ thư */
+    .letter-content {
+        font-size: 14px;
+    }
+
+    /* Pen */
+    .pen {
+        width: 50px;
+        top: -15px;
+        right: -15px;
+    }
+
+    /* Hoa rơi */
+    .fall-item {
+        width: 45px;
+        height: 45px;
+    }
+
+    /* Particles rơi */
+    .particle {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Nút chuyển trang */
+    .nav-buttons {
+        right: 10px;
+        bottom: 10px;
+    }
+    .nav-buttons a {
+        padding: 8px 14px;
+        font-size: 14px;
+    }
+}
